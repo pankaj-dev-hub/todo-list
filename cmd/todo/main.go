@@ -26,7 +26,7 @@ func main() {
 		Handler: router,
 	}
 
-	log.Println("Starting service1...")
+	log.Println("Starting todo service1...")
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}

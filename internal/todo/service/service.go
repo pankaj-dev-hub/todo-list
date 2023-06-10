@@ -6,11 +6,6 @@ import (
 	"pankaj-katyare/todo-list/internal/todo/repository"
 )
 
-func NewTodoHandler() *model.Todo {
-
-	return &model.Todo{}
-}
-
 func CreateTask(todo *model.Todo) model.TodoResult {
 
 	// Save the new user to the database or any other data source
