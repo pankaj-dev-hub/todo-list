@@ -13,6 +13,13 @@ func CreateUser(user *model.User) model.UserResult {
 	return model.UserResult{Status: "true", Users: *res}
 }
 
+func LoginUser(user *model.User) model.TokenRes {
+
+	res := repository.Login(user)
+
+	return model.TokenRes{Status: "true", AccessToken: res}
+}
+
 func GetUser(id string) *model.UserResult {
 	res := repository.Get(id)
 

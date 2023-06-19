@@ -35,6 +35,31 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+
+	var user model.User
+
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println("Failed to parse request body =", err)
+		json.NewEncoder(w).Encode(map[string]bool{"Status": false})
+	}
+	err = json.Unmarshal(data, &user)
+	if err != nil {
+		_ = json.NewEncoder(w).Encode(map[string]bool{"status": false})
+	}
+	log.Println("Request data: ", user)
+
+	// Service
+	res := service.LoginUser(&user)
+
+	log.Println("Response from the service: ", res)
+
+	// Return a success response
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+
+}
 func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	id := r.FormValue("id")

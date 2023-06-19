@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"pankaj-katyare/todo-list/cmd/todo/auth"
 	"pankaj-katyare/todo-list/internal/user/config"
 	"pankaj-katyare/todo-list/internal/user/model"
 
@@ -31,6 +32,35 @@ func Create(user *model.User) *model.User {
 
 	fmt.Println("Disconnected from MongoDB")
 	return user
+}
+
+func Login(u *model.User) string {
+
+	db, collection := config.NewConnection()
+
+	fmt.Printf("Create User: %+v\n", u)
+	// Insert the user into the 	collection
+
+	nestedJSON := map[string]string{"id": u.Id, "password": u.Password}
+
+	var user model.User
+	// Query the users collection
+	err := collection.FindOne(context.Background(), nestedJSON).Decode(&user)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("User : %+v\n", user)
+
+	// Disconnect from MongoDB
+	err = db.Client().Disconnect(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	token, err := auth.GenerateJWT(user.Id)
+	return token
+
 }
 
 func Update(id string, user model.User) model.User {
@@ -114,4 +144,28 @@ func GetAll() []*model.User {
 
 	return todos
 
+}
+
+func ValidateUser(userID, password string) bool {
+
+	db, collection := config.NewConnection()
+
+	nestedJSON := map[string]string{"name": userID, "password": password}
+
+	var user model.User
+	// Query the users collection
+	err := collection.FindOne(context.Background(), nestedJSON).Decode(&user)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("User : %+v\n", user)
+
+	// Disconnect from MongoDB
+	err = db.Client().Disconnect(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return true
 }
