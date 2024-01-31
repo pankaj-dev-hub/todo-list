@@ -1,0 +1,31 @@
+syntax  = "proto3";
+
+option go_package = "internal/reminder/grpc";
+
+service TodoReminder{
+    rpc CreateReminder(CreateReminderRequest) returns (CreateReminderResponse) {}
+    rpc GetReminder(GetReminderRequest) returns (GetReminderResponse) {} 
+}
+
+message CreateReminderRequest{
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string remaining_time = 4;
+    string status = 5;
+}
+
+message CreateReminderResponse {
+    string status = 1;
+    bool result = 2;
+}
+  
+message GetReminderRequest {
+    string id = 1;
+    string remaining_time = 2;
+}
+  
+  message GetReminderResponse {
+    string status = 1;
+    CreateReminderRequest result =2 ;
+  }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,7 +13,8 @@ import (
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	var user model.User
-	data, err := ioutil.ReadAll(r.Body)
+
+	data, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Println("Failed to parse request body =", err)
 		json.NewEncoder(w).Encode(map[string]bool{"Status": false})

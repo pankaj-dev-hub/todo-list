@@ -8,9 +8,16 @@ import (
 func CreateUser(user *model.User) model.UserResult {
 
 	// Save the new user to the database or any other data source
-	res := repository.Create(user)
+	res, err := repository.Create(user)
 
-	return model.UserResult{Status: "true", Users: *res}
+	status := ""
+	if err != nil {
+		status = "failed"
+	} else {
+		status = "true"
+	}
+
+	return model.UserResult{Status: status, Users: *res}
 }
 
 func LoginUser(user *model.User) model.TokenRes {

@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Create(user *model.User) *model.User {
+func Create(user *model.User) (*model.User, error) {
 
 	db, collection := config.NewConnection()
 
@@ -20,6 +20,7 @@ func Create(user *model.User) *model.User {
 	insertResult, err := collection.InsertOne(context.Background(), user)
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 	// Print the inserted user's ID
 	fmt.Println("Inserted user ID:", insertResult.InsertedID)
@@ -28,10 +29,12 @@ func Create(user *model.User) *model.User {
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
+
 	}
 
 	fmt.Println("Disconnected from MongoDB")
-	return user
+	return user, nil
 }
 
 func Login(u *model.User) string {
@@ -72,6 +75,7 @@ func Update(id string, user model.User) model.User {
 
 	filter := map[string]string{"id": id}
 	update := bson.M{"$set": user}
+	user.Id = id
 
 	result, err := colloction.UpdateOne(context.Background(), filter, update)
 	if err != nil {
