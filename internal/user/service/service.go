@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"pankaj-katyare/todo-list/internal/user/model"
 	"pankaj-katyare/todo-list/internal/user/repository"
 )
@@ -22,27 +23,39 @@ func CreateUser(user *model.User) model.UserResult {
 
 func LoginUser(user *model.User) model.TokenRes {
 
-	res := repository.Login(user)
+	res, err := repository.Login(user)
+	if err != nil {
+		return model.TokenRes{Status: "false", AccessToken: fmt.Sprintf("%s", err)}
+	}
 
 	return model.TokenRes{Status: "true", AccessToken: res}
 }
 
 func GetUser(id string) *model.UserResult {
-	res := repository.Get(id)
+	res, err := repository.Get(id)
+	if err != nil {
+		return &model.UserResult{Status: "false", Message: fmt.Sprintf("%s", err)}
+	}
 
-	return &model.UserResult{Status: "true", Users: res}
+	return &model.UserResult{Status: "true", Users: *res}
 }
 
 func GetAllUser() *model.UserAllResult {
 
-	res := repository.GetAll()
+	res, err := repository.GetAll()
+	if err != nil {
+		return &model.UserAllResult{Status: "true", Message: fmt.Sprintf("%s", err)}
+	}
 
 	return &model.UserAllResult{Status: "true", Users: res}
 }
 
 func UpdateUser(id string, user model.User) model.UserResult {
 
-	res := repository.Update(id, user)
+	res, err := repository.Update(id, user)
+	if err != nil {
+		return model.UserResult{Status: "false", Message: fmt.Sprintf("%s", err)}
+	}
 
-	return model.UserResult{Status: "true", Users: res}
+	return model.UserResult{Status: "true", Users: *res}
 }

@@ -19,7 +19,7 @@ func Create(user *model.User) (*model.User, error) {
 	// Insert the user into the 	collection
 	insertResult, err := collection.InsertOne(context.Background(), user)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return nil, err
 	}
 	// Print the inserted user's ID
@@ -28,7 +28,7 @@ func Create(user *model.User) (*model.User, error) {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return nil, err
 
 	}
@@ -37,7 +37,7 @@ func Create(user *model.User) (*model.User, error) {
 	return user, nil
 }
 
-func Login(u *model.User) string {
+func Login(u *model.User) (string, error) {
 
 	db, collection := config.NewConnection()
 
@@ -50,7 +50,8 @@ func Login(u *model.User) string {
 	// Query the users collection
 	err := collection.FindOne(context.Background(), nestedJSON).Decode(&user)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return "", err
 	}
 
 	fmt.Printf("User : %+v\n", user)
@@ -58,15 +59,15 @@ func Login(u *model.User) string {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	token, err := auth.GenerateJWT(user.Id)
-	return token
+	return token, nil
 
 }
 
-func Update(id string, user model.User) model.User {
+func Update(id string, user model.User) (*model.User, error) {
 
 	db, colloction := config.NewConnection()
 
@@ -79,7 +80,8 @@ func Update(id string, user model.User) model.User {
 
 	result, err := colloction.UpdateOne(context.Background(), filter, update)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	// Print the inserted user's ID
@@ -88,13 +90,13 @@ func Update(id string, user model.User) model.User {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
-	return user
+	return &user, nil
 }
 
-func Get(id string) model.User {
+func Get(id string) (*model.User, error) {
 
 	db, collection := config.NewConnection()
 
@@ -104,7 +106,8 @@ func Get(id string) model.User {
 	// Query the users collection
 	err := collection.FindOne(context.Background(), nestedJSON).Decode(&user)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	fmt.Printf("User : %+v\n", user)
@@ -112,20 +115,20 @@ func Get(id string) model.User {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
-	return user
+	return &user, nil
 
 }
 
-func GetAll() []*model.User {
+func GetAll() ([]*model.User, error) {
 
 	db, collection := config.NewConnection()
 
 	cursor, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	var todos []*model.User
@@ -134,7 +137,7 @@ func GetAll() []*model.User {
 		var user model.User
 		err := cursor.Decode(&user)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 		todos = append(todos, &user)
 		fmt.Printf("User : %+v\n", user)
@@ -143,14 +146,15 @@ func GetAll() []*model.User {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return todos
+	return todos, nil
 
 }
 
-func ValidateUser(userID, password string) bool {
+func ValidateUser(userID, password string) (bool, error) {
 
 	db, collection := config.NewConnection()
 
@@ -160,7 +164,7 @@ func ValidateUser(userID, password string) bool {
 	// Query the users collection
 	err := collection.FindOne(context.Background(), nestedJSON).Decode(&user)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	fmt.Printf("User : %+v\n", user)
@@ -168,8 +172,9 @@ func ValidateUser(userID, password string) bool {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return false, err
 	}
 
-	return true
+	return true, nil
 }

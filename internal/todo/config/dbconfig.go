@@ -17,7 +17,7 @@ type DBConfig struct {
 
 func NewDBConfig() *DBConfig {
 	return &DBConfig{
-		Url:        "mongodb://localhost:27017",
+		Url:        "mongodb://mongo-service:27017",
 		Database:   "tododb",
 		Collection: "todo",
 	}

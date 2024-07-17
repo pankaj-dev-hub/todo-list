@@ -17,7 +17,7 @@ type DBConfig struct {
 
 func NewDBConfig() *DBConfig {
 	return &DBConfig{
-		Url:        "mongodb://localhost:27017",
+		Url:        "mongodb://mongo-service:27017",
 		Database:   "tododb",
 		Collection: "user",
 	}
@@ -49,7 +49,7 @@ func NewConnection() (*mongo.Database, *mongo.Collection) {
 
 	db, err := ConnectDB(configdb)
 	if err != nil {
-		log.Fatal("Failed to connect db.", err)
+		log.Println("Failed to connect db.", err)
 	}
 
 	collection := db.Collection(configdb.Collection)

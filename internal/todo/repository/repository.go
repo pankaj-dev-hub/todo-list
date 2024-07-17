@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func Create(todo *model.Todo) *model.Todo {
+func Create(todo *model.Todo) (*model.Todo, error) {
 
 	db, collection := config.NewConnection()
 
@@ -18,7 +18,8 @@ func Create(todo *model.Todo) *model.Todo {
 	// Insert the user into the 	collection
 	insertResult, err := collection.InsertOne(context.Background(), todo)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	// Print the inserted user's ID
 	fmt.Println("Inserted user ID:", insertResult.InsertedID)
@@ -26,14 +27,15 @@ func Create(todo *model.Todo) *model.Todo {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	fmt.Println("Disconnected from MongoDB")
-	return todo
+	return todo, nil
 }
 
-func Update(id string, todo model.Todo) model.Todo {
+func Update(id string, todo model.Todo) (*model.Todo, error) {
 
 	db, colloction := config.NewConnection()
 
@@ -45,7 +47,8 @@ func Update(id string, todo model.Todo) model.Todo {
 
 	result, err := colloction.UpdateOne(context.Background(), filter, update)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	// Print the inserted user's ID
@@ -54,13 +57,14 @@ func Update(id string, todo model.Todo) model.Todo {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return todo
+	return &todo, nil
 }
 
-func Get(id string) model.Todo {
+func Get(id string) (*model.Todo, error) {
 
 	db, collection := config.NewConnection()
 
@@ -70,7 +74,8 @@ func Get(id string) model.Todo {
 	// Query the users collection
 	err := collection.FindOne(context.Background(), nestedJSON).Decode(&todo)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	fmt.Printf("Todo Tasks: %+v\n", todo.Tasks)
@@ -78,20 +83,22 @@ func Get(id string) model.Todo {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return todo
+	return &todo, nil
 
 }
 
-func GetAll() []*model.Todo {
+func GetAll() ([]*model.Todo, error) {
 
 	db, collection := config.NewConnection()
 
 	cursor, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	var todos []*model.Todo
@@ -100,7 +107,8 @@ func GetAll() []*model.Todo {
 		var todo model.Todo
 		err := cursor.Decode(&todo)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil, err
 		}
 		todos = append(todos, &todo)
 		fmt.Printf("Todo Tasks: %+v\n", todo)
@@ -109,14 +117,15 @@ func GetAll() []*model.Todo {
 	// Disconnect from MongoDB
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return todos
+	return todos, err
 
 }
 
-func GetCompletedTask() []*model.Todo {
+func GetCompletedTask() ([]*model.Todo, error) {
 
 	db, collection := config.NewConnection()
 
@@ -126,7 +135,8 @@ func GetCompletedTask() []*model.Todo {
 
 	cursor, err := collection.Find(context.Background(), fiter)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	fmt.Printf("Todo Cursor: %+v\n", cursor)
 	var todos []*model.Todo
@@ -134,7 +144,8 @@ func GetCompletedTask() []*model.Todo {
 
 		err := cursor.Decode(&todo)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil, err
 		}
 		todos = append(todos, &todo)
 		fmt.Printf("Todo Tasks: %+v\n", todo)
@@ -142,13 +153,14 @@ func GetCompletedTask() []*model.Todo {
 
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return todos
+	return todos, nil
 }
 
-func GetPendingTask() []*model.Todo {
+func GetPendingTask() ([]*model.Todo, error) {
 
 	db, collection := config.NewConnection()
 
@@ -156,7 +168,8 @@ func GetPendingTask() []*model.Todo {
 
 	cursor, err := collection.Find(context.Background(), fiter)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	fmt.Printf("Todo Cursor: %+v\n", cursor)
 	var todos []*model.Todo
@@ -164,7 +177,8 @@ func GetPendingTask() []*model.Todo {
 		var todo model.Todo
 		err := cursor.Decode(&todo)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil, err
 		}
 		todos = append(todos, &todo)
 	}
@@ -174,8 +188,9 @@ func GetPendingTask() []*model.Todo {
 
 	err = db.Client().Disconnect(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
-	return todos
+	return todos, nil
 }

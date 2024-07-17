@@ -17,7 +17,7 @@ func main() {
 	user.RegisterHandlers(router)
 
 	server := &http.Server{
-		Addr:    ":8000",
+		Addr:    ":8081",
 		Handler: router,
 	}
 
