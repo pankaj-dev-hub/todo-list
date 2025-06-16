@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: user
-        image: pankajkatyare/todo-list:latest
+        image: pankaj-dev-hub/todo-list:latest
         ports:
         - containerPort: 8081
