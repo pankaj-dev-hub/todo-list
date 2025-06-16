@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"pankaj-katyare/todo-list/internal/todo/model"
-	"pankaj-katyare/todo-list/internal/todo/service"
+	"pankaj-dev-hub/todo-list/internal/todo/model"
+	"pankaj-dev-hub/todo-list/internal/todo/service"
 )
 
 func CreateTask(w http.ResponseWriter, r *http.Request) {

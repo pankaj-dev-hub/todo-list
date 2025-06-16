@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
-	"pankaj-katyare/todo-list/internal/user/model"
-	"pankaj-katyare/todo-list/internal/user/repository"
+	"pankaj-dev-hub/todo-list/internal/user/model"
+	"pankaj-dev-hub/todo-list/internal/user/repository"
 )
 
 func CreateUser(user *model.User) model.UserResult {

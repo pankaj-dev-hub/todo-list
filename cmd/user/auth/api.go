@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"pankaj-katyare/todo-list/cmd/todo/auth"
+	"pankaj-dev-hub/todo-list/cmd/todo/auth"
 
 	"github.com/gorilla/mux"
 )

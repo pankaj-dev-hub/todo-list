@@ -2,8 +2,8 @@ package user
 
 import (
 	"net/http"
-	"pankaj-katyare/todo-list/cmd/todo/auth"
-	"pankaj-katyare/todo-list/internal/user/handler"
+	"pankaj-dev-hub/todo-list/cmd/todo/auth"
+	"pankaj-dev-hub/todo-list/internal/user/handler"
 
 	"github.com/gorilla/mux"
 )

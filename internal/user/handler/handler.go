@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"pankaj-katyare/todo-list/internal/user/model"
-	"pankaj-katyare/todo-list/internal/user/service"
+	"pankaj-dev-hub/todo-list/internal/user/model"
+	"pankaj-dev-hub/todo-list/internal/user/service"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {

@@ -1,4 +1,4 @@
-module pankaj-katyare/todo-list
+module pankaj-dev-hub/todo-list
 
 go 1.20
 

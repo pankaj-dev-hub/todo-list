@@ -4,8 +4,8 @@ import (
 	"log"
 	"net"
 
-	pb "pankaj-katyare/todo-list/internal/reminder/grpc"
-	"pankaj-katyare/todo-list/internal/reminder/service"
+	pb "pankaj-dev-hub/todo-list/internal/reminder/grpc"
+	"pankaj-dev-hub/todo-list/internal/reminder/service"
 
 	"google.golang.org/grpc"
 )

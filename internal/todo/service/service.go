@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 	"log"
-	"pankaj-katyare/todo-list/internal/todo/model"
-	"pankaj-katyare/todo-list/internal/todo/repository"
+	"pankaj-dev-hub/todo-list/internal/todo/model"
+	"pankaj-dev-hub/todo-list/internal/todo/repository"
 )
 
 func CreateTask(todo *model.Todo) model.TodoResult {

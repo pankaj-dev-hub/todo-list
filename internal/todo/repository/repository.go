@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"pankaj-katyare/todo-list/internal/todo/config"
-	"pankaj-katyare/todo-list/internal/todo/model"
+	"pankaj-dev-hub/todo-list/internal/todo/config"
+	"pankaj-dev-hub/todo-list/internal/todo/model"
 
 	"go.mongodb.org/mongo-driver/bson"
 )

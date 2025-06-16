@@ -2,8 +2,8 @@ package todo
 
 import (
 	"net/http"
-	"pankaj-katyare/todo-list/cmd/todo/auth"
-	"pankaj-katyare/todo-list/internal/todo/handler"
+	"pankaj-dev-hub/todo-list/cmd/todo/auth"
+	"pankaj-dev-hub/todo-list/internal/todo/handler"
 
 	"github.com/gorilla/mux"
 )

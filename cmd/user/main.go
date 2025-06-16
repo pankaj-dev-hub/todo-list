@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"pankaj-katyare/todo-list/internal/user"
+	"pankaj-dev-hub/todo-list/internal/user"
 
 	"github.com/gorilla/mux"
 )

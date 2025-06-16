@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	pb "pankaj-katyare/todo-list/internal/reminder/grpc"
+	pb "pankaj-dev-hub/todo-list/internal/reminder/grpc"
 )
 
 type TodoServer struct {
